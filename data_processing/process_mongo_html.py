@@ -9,7 +9,6 @@ import re
 
 def main():
     print("Scraping MongoDB")
-    scrape_ayd_profiles()
     scrape_eyd_profiles()
 
     return 0
@@ -74,7 +73,7 @@ def soupify(url):
               .format(url, datetime.datetime.now()),
               'Status Code: {}'.format(webpage.status_code))
 
-    return BeautifulSoup(webpage.text, 'html.parser')
+    return BeautifulSoup(webpage.text, 'html5lib')
 
 
 def scrape_ayd_profiles():
@@ -107,16 +106,27 @@ def scrape_eyd_profiles():
 
 def scrape_subpage(profile_soup, yd=None):
     """Scrapes the profile pages in MongoDB extracting the table data"""
-
     # Get the statistics table from the page.
     try:
         table_df = pd.read_html(
             profile_soup.prettify(),
+            header=0,
             attrs={'class': 'graytable', 'cellpadding': '4'}
         )[0]
     except Exception as e:
         print(e)
         return None
+
+    insert_user(profile_soup, yd)
+
+    # Clean out rows without a tournament listed
+
+    table_df = table_df['Tournament']
+
+    return None
+
+
+def insert_user(profile_soup, yd):
 
     # Get the user's name and kgs name
     p_strings = profile_soup.find(text=re.compile(r'\baka\b')).split('aka ')
@@ -160,18 +170,16 @@ def scrape_subpage(profile_soup, yd=None):
         cur.execute(q)
         conn.commit()
 
-    # column = 'ayd_member' if yd == 'ayd' else 'eyd_member'
-    # q = '''
-    #     UPDATE "user"
-    #     SET {column} = True
-    #     WHERE kgs_username = '{kgs_name}';
-    #     '''.format(column=column, kgs_name=kgs_name)
-
     cur.close()
     conn.close()
-
-    return None
 
 
 if __name__ == "__main__":
     main()
+
+# column = 'ayd_member' if yd == 'ayd' else 'eyd_member'
+# q = '''
+#     UPDATE "user"
+#     SET {column} = True
+#     WHERE kgs_username = '{kgs_name}';
+#     '''.format(column=column, kgs_name=kgs_name)
