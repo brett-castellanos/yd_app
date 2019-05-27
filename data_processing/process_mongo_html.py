@@ -109,14 +109,14 @@ def scrape_subpage(profile_soup, yd=None):
     """Scrapes the profile pages in MongoDB extracting the table data"""
 
     # Get the statistics table from the page.
-    # try:
-    #     table_df = pd.read_html(
-    #         profile_soup.prettify(),
-    #         attrs={'class': 'graytable', 'cellpadding': '4'}
-    #     )[0]
-    # except Exception as e:
-    #     print(e)
-    #     return None
+    try:
+        table_df = pd.read_html(
+            profile_soup.prettify(),
+            attrs={'class': 'graytable', 'cellpadding': '4'}
+        )[0]
+    except Exception as e:
+        print(e)
+        return None
 
     # Get the user's name and kgs name
     p_strings = profile_soup.find(text=re.compile(r'\baka\b')).split('aka ')
