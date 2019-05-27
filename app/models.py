@@ -5,6 +5,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), default=None)
     kgs_username = db.Column(db.String(64), index=True, unique=True)
+    ayd_member = db.Column(db.Boolean, default=False, index=True)
+    eyd_member = db.Column(db.Boolean, default=False, index=True)
 
     def __repr__(self):
         return '<User {}>'.format(self.kgs_username)
@@ -19,7 +21,8 @@ class Game(db.Model):
     white = db.Column(db.String(64), db.ForeignKey('user.kgs_username'))
     b_win = db.Column(db.Boolean, default=0)
     w_win = db.Column(db.Boolean, default=0)
-    yd_game = db.Column(db.Boolean, default=0, index=True)
+    ayd_game = db.Column(db.Boolean, default=0, index=True)
+    eyd_game = db.Column(db.Boolean, default=0, index=True)
 
     black_player = db.relationship(
         'User',
