@@ -10,6 +10,7 @@ import re
 def main():
     print("Scraping MongoDB")
     scrape_ayd_profiles()
+    scrape_eyd_profiles()
 
     return 0
 
@@ -89,15 +90,19 @@ def scrape_ayd_profiles():
         print("Now scraping {}".format(link['url']))
         scrape_subpage(profile_soup, 'ayd')
 
-    # # Connect to EYD MongoDB
-    # client, eyd_db, col_dict = get_mongo_connection('eyd', ['html'])
-    # html_col = col_dict['html']
 
-    # # Iterate through html and send soup to scrape subpage
-    # for link in html_col.find():
-    #     profile_soup = BeautifulSoup(link['html'], 'html.parser')
-    #     print("Now scraping {}".format(link['url']))
-    #     scrape_subpage(profile_soup, 'eyd')
+def scrape_eyd_profiles():
+    """Scrapes all game records from the collected pages."""
+
+    # Connect to EYD MongoDB
+    client, eyd_db, col_dict = get_mongo_connection('eyd', ['html'])
+    html_col = col_dict['html']
+
+    # Iterate through html and send soup to scrape subpage
+    for link in html_col.find():
+        profile_soup = BeautifulSoup(link['html'], 'html.parser')
+        print("Now scraping {}".format(link['url']))
+        scrape_subpage(profile_soup, 'eyd')
 
 
 def scrape_subpage(profile_soup, yd=None):
@@ -115,14 +120,16 @@ def scrape_subpage(profile_soup, yd=None):
 
     # Get the user's name and kgs name
     p_strings = profile_soup.find(text=re.compile(r'\baka\b')).split('aka ')
+    if len(p_strings) < 2 or p_strings is None:
+        print("No profile on this page.")
+        return None
     kgs_name = p_strings[1].strip()
     name = p_strings[0].split('of ')[1].strip().replace("'", "''")
+    if len(name) == 0:
+        print("No name at this profile")
+        return None
 
     ayd_member, eyd_member = False, False
-    if yd == 'ayd':
-        ayd_member = True
-    elif yd == 'eyd':
-        eyd_member = True
 
     conn = psy.connect(
         dbname='yd_records',
@@ -150,21 +157,20 @@ def scrape_subpage(profile_soup, yd=None):
                     ayd_member=ayd_member,
                     eyd_member=eyd_member
                 )
-    elif yd is None:
-        return None
-    elif yd is not None:
-        column = 'ayd_member' if yd == 'ayd' else 'eyd_member'
-        q = '''
-            UPDATE "user"
-            SET {column} = True
-            WHERE kgs_username = '{kgs_name}';
-            '''.format(column=column, kgs_name=kgs_name)
-
-    cur.execute(q)
-    conn.commit()
+        cur.execute(q)
+        conn.commit()
+   
+    # column = 'ayd_member' if yd == 'ayd' else 'eyd_member'
+    # q = '''
+    #     UPDATE "user"
+    #     SET {column} = True
+    #     WHERE kgs_username = '{kgs_name}';
+    #     '''.format(column=column, kgs_name=kgs_name)
 
     cur.close()
     conn.close()
+
+    return None
 
 
 if __name__ == "__main__":
