@@ -24,8 +24,6 @@ class Game(db.Model):
     ayd_game = db.Column(db.Boolean, default=0, index=True)
     eyd_game = db.Column(db.Boolean, default=0, index=True)
 
-    __table_args__ = (db.UniqueConstraint('tournament', 'date', 'round', 'black', 'white', name='uniq_con_1'), )
-
     black_player = db.relationship(
         'User',
         backref=db.backref('black', order_by=id),

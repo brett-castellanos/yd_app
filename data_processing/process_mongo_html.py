@@ -180,7 +180,7 @@ def insert_game_table(table_df):
     table_df = table_df[table_df['Round'] != '0']
     table_df = table_df[table_df['White'] != 'Manual Rating Reset']
     table_df = table_df[table_df['Black'] != 'Initial Rating']
-    
+
     table_df['date'] = table_df['Tournament'].map(lambda x: x.split(',')[1].strip())
     table_df['date'] = table_df['date'].map(lambda x:  x.split('-')[1] if '-' in x else x)
     table_df['date'] = table_df['date'].map(lambda x: datetime.datetime.strptime(x, '%B %Y'))
@@ -210,10 +210,17 @@ def insert_game_table(table_df):
 
     for row in new_df.itertuples():
         q = """
-            INSERT INTO "game" (tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game)
-            VALUES ('{t}', {r}, '{b}', '{w}', {b_win}, {w_win}, TIMESTAMP '{d}', {ayd}, {eyd})
-            ON CONFLICT ON CONSTRAINT uniq_con_1
-            DO NOTHING;
+            SELECT tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game
+            FROM game
+            WHERE tournament = '{t}'
+            AND round = {r}
+            AND black = '{b}'
+            AND white = '{w}'
+            AND b_win = {b_win}
+            AND w_win = {w_win}
+            AND date = TIMESTAMP '{d}'
+            AND ayd_game = {ayd}
+            AND eyd_game = {eyd};
             """.format(
                 t=row[1],
                 r=row[2],
@@ -226,8 +233,25 @@ def insert_game_table(table_df):
                 eyd=row[9]
             )
         cur.execute(q)
+        record = cur.fetchone()
+        if record is None:
+            q = """
+                INSERT INTO "game" (tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game)
+                VALUES ('{t}', {r}, '{b}', '{w}', {b_win}, {w_win}, TIMESTAMP '{d}', {ayd}, {eyd});
+                """.format(
+                    t=row[1],
+                    r=row[2],
+                    b=row[3],
+                    w=row[4],
+                    b_win=row[5],
+                    w_win=row[6],
+                    d=row[7],
+                    ayd=row[8],
+                    eyd=row[9]
+                )
+            cur.execute(q)
+        conn.commit()
 
-    conn.commit()
     cur.close()
     conn.close()
     return None
@@ -242,3 +266,14 @@ if __name__ == "__main__":
 #     SET {column} = True
 #     WHERE kgs_username = '{kgs_name}';
 #     '''.format(column=column, kgs_name=kgs_name)
+# SELECT tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game
+# FROM game
+# WHERE tournament = 'League E'
+# AND round = 5
+# AND black = 'myokiki'
+# AND white = 'bcas1984'
+# AND b_win = True
+# AND w_win = False
+# AND date = TIMESTAMP '2015-01-01 00:00:00'
+# AND ayd_game = True
+# AND eyd_game = False;
