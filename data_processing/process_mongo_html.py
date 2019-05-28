@@ -118,13 +118,7 @@ def scrape_subpage(profile_soup, yd=None):
         return None
 
     insert_user(profile_soup, yd)
-
-    # Clean out rating adjustment rows
-    table_df = table_df[table_df['Round'] != '0']
-    table_df = table_df[table_df['White'] != 'Manual Rating Reset']
-
-    # Change round to integers
-    table_df['Round'] = table_df['Round'].map(int)
+    insert_game_table(table_df)
 
     return None
 
@@ -175,6 +169,68 @@ def insert_user(profile_soup, yd):
 
     cur.close()
     conn.close()
+
+
+def insert_game_table(table_df):
+    # Create new_df to fill with appropriate data
+    new_df = pd.DataFrame()
+
+    # Clean out rating adjustment rows
+    table_df = table_df.dropna()
+    table_df = table_df[table_df['Round'] != '0']
+    table_df = table_df[table_df['White'] != 'Manual Rating Reset']
+    table_df = table_df[table_df['Black'] != 'Initial Rating']
+    
+    table_df['date'] = table_df['Tournament'].map(lambda x: x.split(',')[1].strip())
+    table_df['date'] = table_df['date'].map(lambda x:  x.split('-')[1] if '-' in x else x)
+    table_df['date'] = table_df['date'].map(lambda x: datetime.datetime.strptime(x, '%B %Y'))
+    table_df['tournament'] = table_df['Tournament'].map(lambda x: x.split(',')[0].strip())
+
+    new_df['tournament'] = table_df['Tournament'].map(lambda x: x.split(',')[0].replace(',', ''))
+
+    new_df['round'] = table_df['Round'].map(int)
+    new_df['black'] = table_df['Black']
+    new_df['white'] = table_df['White']
+    new_df['b_win'] = table_df['Result'].map(lambda x: x.startswith('B'))
+    new_df['w_win'] = table_df['Result'].map(lambda x: x.startswith('W'))
+    new_df['date'] = table_df['date']
+    new_df['ayd_game'] = table_df['tournament'].map(lambda x: x.startswith('AYD'))
+    new_df['eyd_game'] = table_df['tournament'].map(lambda x: x.startswith('EYD'))
+    new_df['tournament'] = new_df['tournament'].map(lambda x: x.replace('EYD ', ''))
+    new_df['tournament'] = new_df['tournament'].map(lambda x: x.replace('AYD ', ''))
+
+    conn = psy.connect(
+            dbname='yd_records',
+            user='postgres',
+            password='docker',
+            host='localhost'
+    )
+
+    cur = conn.cursor()
+
+    for row in new_df.itertuples():
+        q = """
+            INSERT INTO "game" (tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game)
+            VALUES ('{t}', {r}, '{b}', '{w}', {b_win}, {w_win}, TIMESTAMP '{d}', {ayd}, {eyd})
+            ON CONFLICT ON CONSTRAINT uniq_con_1
+            DO NOTHING;
+            """.format(
+                t=row[1],
+                r=row[2],
+                b=row[3],
+                w=row[4],
+                b_win=row[5],
+                w_win=row[6],
+                d=row[7],
+                ayd=row[8],
+                eyd=row[9]
+            )
+        cur.execute(q)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+    return None
 
 
 if __name__ == "__main__":
