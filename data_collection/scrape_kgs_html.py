@@ -3,6 +3,7 @@ import psycopg2 as psy
 import requests as req
 from pymongo import MongoClient
 from time import sleep
+import random
 import datetime
 
 
@@ -22,12 +23,11 @@ def main():
     
     # cur.execute(q)
     with open('usernames.txt') as usernames:
-
       for username in usernames.readlines():
           print("Now scraping for {}".format(username))
           links = get_user_links(username[0])
           insert_user_subpages(links)
-          sleep(60)
+          sleep(random.uniform(45, 90))
 
     # cur.close()
     # conn.close()
@@ -90,7 +90,7 @@ def insert_user_subpages(links):
         cur_page = req.get(link)
         cur_soup = BeautifulSoup(cur_page.text, 'html5lib')
         insert_html_to_mongo(link, cur_soup, html_col)
-        sleep(5)
+        sleep(random.uniform(15, 45))
         
     return 0
 
