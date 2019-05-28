@@ -7,12 +7,12 @@ from time import sleep
 
 def main():
     # Open connects to postgres db
-    conn = psy.connect(
-        dbname='yd_records',
-        user='postgres',
-        password='docker',
-        host='localhost'
-    )
+    # conn = psy.connect(
+    #     dbname='yd_records',
+    #     user='postgres',
+    #     password='docker',
+    #     host='localhost'
+    # )
 
     # cur = conn.cursor()
     # q = '''
