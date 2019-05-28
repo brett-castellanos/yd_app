@@ -27,7 +27,8 @@ def main():
           print("Now scraping for {}".format(username))
           links = get_user_links(username[0])
           insert_user_subpages(links)
-          sleep(random.uniform(45, 90))
+          print('Waiting 8-20 seconds.')
+          sleep(random.uniform(8, 20))
 
     # cur.close()
     # conn.close()
@@ -88,9 +89,12 @@ def insert_user_subpages(links):
     
     for link in links:
         cur_page = req.get(link)
+        print('Scraping {}'.format(link))
+        print(req.status_codes)
         cur_soup = BeautifulSoup(cur_page.text, 'html5lib')
         insert_html_to_mongo(link, cur_soup, html_col)
-        sleep(random.uniform(15, 45))
+        print('Waiting 8-20 seconds.')
+        sleep(random.uniform(8, 20))
         
     return 0
 
