@@ -80,11 +80,11 @@ def soupify(url):
 def scrape_ayd_profiles():
     """
     Scrapes all game records from the collected pages.
-    
+
     Parameters
     ----------
     None
-    
+
     Returns
     -------
     None
@@ -99,14 +99,14 @@ def scrape_ayd_profiles():
         profile_soup = BeautifulSoup(link['html'], 'html.parser')
         print("Now scraping {}".format(link['url']))
         scrape_subpage(profile_soup, 'ayd')
-    
+
     return None
 
 
 def scrape_eyd_profiles():
     """
     Scrapes all game records from the collected pages.
-    
+
     Parameters
     ----------
     None
@@ -125,23 +125,22 @@ def scrape_eyd_profiles():
         profile_soup = BeautifulSoup(link['html'], 'html.parser')
         print("Now scraping {}".format(link['url']))
         scrape_subpage(profile_soup, 'eyd')
-    
+
     return None
 
 
 def scrape_subpage(profile_soup, yd=None):
     """
     Scrapes given BeautifulSoup object for user and game data.
-    
+
     Parameters
     ----------
     profile_soup: BeautifulSoup:
       The webpage to be scraped.
-    
+
     Returns
     -------
     None
-      
     """
     # Get the statistics table from the page.
     try:
@@ -155,7 +154,8 @@ def scrape_subpage(profile_soup, yd=None):
         return None
 
     insert_user(profile_soup, yd)
-    insert_game_table(table_df)
+
+    # insert_game_table(table_df)
 
     return None
 
