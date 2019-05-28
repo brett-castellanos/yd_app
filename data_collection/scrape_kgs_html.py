@@ -88,7 +88,7 @@ def insert_user_subpages(links):
     for link in links:
         cur_page = req.get(link)
         cur_soup = BeautifulSoup(cur_page.text, 'html5lib')
-        insert_html_to_mongo(link, cur_soup.prettify(), html_col)
+        insert_html_to_mongo(link, cur_soup, html_col)
         sleep(2)
         
     return 0
