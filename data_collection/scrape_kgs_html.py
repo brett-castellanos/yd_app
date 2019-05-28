@@ -14,20 +14,21 @@ def main():
         host='localhost'
     )
 
-    cur = conn.cursor()
-    q = '''
-        SELECT kgs_username FROM users
-        '''
+    # cur = conn.cursor()
+    # q = '''
+    #     SELECT kgs_username FROM users
+    #     '''
     
-    cur.execute(q)
+    # cur.execute(q)
+    with open('usernames.txt') as usernames:
 
-    for username in cur.fetchall():
-        links = get_user_links(username[0])
-        insert_user_subpages(links)
-        sleep(2)
+      for username in usernames.readlines():
+          links = get_user_links(username[0])
+          insert_user_subpages(links)
+          sleep(2)
 
-    cur.close()
-    conn.close()
+    # cur.close()
+    # conn.close()
 
     return 0
 
