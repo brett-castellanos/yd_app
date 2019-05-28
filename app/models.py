@@ -49,3 +49,24 @@ class Game(db.Model):
         backref=db.backref('white', order_by=id),
         primaryjoin="Game.white == User.kgs_username"
     )
+
+
+class KgsGame(db.Model):
+    __tablename__ = 'kgs_games'
+
+    id = db.Column(db.Integer, primary_key=True)
+    white = db.Column(db.String(64))
+    black = db.Column(db.String(64))
+    setup = db.Column(db.String(64))
+    date = db.Column(db.DateTime, index=True, default=None)
+    w_win = db.Column(db.Boolean, default=0)
+    b_win = db.Column(db.Boolean, default=0)
+    
+    __tableargs__ = (
+        db.UniqueConstraint(
+            'date',
+            'black',
+            'white',
+            name='uniq_kgs_game_con'
+        ),
+    )
