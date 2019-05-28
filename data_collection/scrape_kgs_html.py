@@ -24,9 +24,10 @@ def main():
     with open('usernames.txt') as usernames:
 
       for username in usernames.readlines():
+          print("Now scraping for {}".format(username))
           links = get_user_links(username[0])
           insert_user_subpages(links)
-          sleep(2)
+          sleep(60)
 
     # cur.close()
     # conn.close()
@@ -89,7 +90,7 @@ def insert_user_subpages(links):
         cur_page = req.get(link)
         cur_soup = BeautifulSoup(cur_page.text, 'html5lib')
         insert_html_to_mongo(link, cur_soup, html_col)
-        sleep(2)
+        sleep(5)
         
     return 0
 
