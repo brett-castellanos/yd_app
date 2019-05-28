@@ -250,7 +250,7 @@ def insert_game_table(table_df):
                     eyd=row[9]
                 )
             cur.execute(q)
-        conn.commit()
+            conn.commit()
 
     cur.close()
     conn.close()
