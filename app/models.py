@@ -2,6 +2,8 @@ from app import db
 
 
 class User(db.Model):
+    __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), default=None)
     kgs_username = db.Column(db.String(64), index=True, unique=True)
@@ -13,6 +15,8 @@ class User(db.Model):
 
 
 class Game(db.Model):
+    __tablename__ = 'games'
+
     id = db.Column(db.Integer, primary_key=True)
     tournament = db.Column(db.String(128), index=True)
     date = db.Column(db.DateTime, index=True, default=None)
@@ -23,6 +27,16 @@ class Game(db.Model):
     w_win = db.Column(db.Boolean, default=0)
     ayd_game = db.Column(db.Boolean, default=0, index=True)
     eyd_game = db.Column(db.Boolean, default=0, index=True)
+
+    __tableargs__ = (
+        db.UniqueConstraint(
+            'tournament',
+            'round',
+            'black',
+            'white',
+            name='uniq_game_con'
+        ),
+    )
 
     black_player = db.relationship(
         'User',

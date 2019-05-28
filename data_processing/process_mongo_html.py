@@ -19,6 +19,7 @@ def get_mongo_connection(database, collections):
     Connects to the local MongoDB.
 
     Parameters
+    ----------
     database: str
       The name of the MongoDB
     collections: list
@@ -77,7 +78,17 @@ def soupify(url):
 
 
 def scrape_ayd_profiles():
-    """Scrapes all game records from the collected pages."""
+    """
+    Scrapes all game records from the collected pages.
+    
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    None
+    """
 
     # Connect to AYD MongoDB
     client, ayd_db, col_dict = get_mongo_connection('ayd', ['html'])
@@ -88,10 +99,22 @@ def scrape_ayd_profiles():
         profile_soup = BeautifulSoup(link['html'], 'html.parser')
         print("Now scraping {}".format(link['url']))
         scrape_subpage(profile_soup, 'ayd')
+    
+    return None
 
 
 def scrape_eyd_profiles():
-    """Scrapes all game records from the collected pages."""
+    """
+    Scrapes all game records from the collected pages.
+    
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """
 
     # Connect to EYD MongoDB
     client, eyd_db, col_dict = get_mongo_connection('eyd', ['html'])
@@ -102,10 +125,24 @@ def scrape_eyd_profiles():
         profile_soup = BeautifulSoup(link['html'], 'html.parser')
         print("Now scraping {}".format(link['url']))
         scrape_subpage(profile_soup, 'eyd')
+    
+    return None
 
 
 def scrape_subpage(profile_soup, yd=None):
-    """Scrapes the profile pages in MongoDB extracting the table data"""
+    """
+    Scrapes given BeautifulSoup object for user and game data.
+    
+    Parameters
+    ----------
+    profile_soup: BeautifulSoup:
+      The webpage to be scraped.
+    
+    Returns
+    -------
+    None
+      
+    """
     # Get the statistics table from the page.
     try:
         table_df = pd.read_html(
@@ -124,6 +161,16 @@ def scrape_subpage(profile_soup, yd=None):
 
 
 def insert_user(profile_soup, yd):
+    """
+    Inserts the user into PostgreSQL.
+
+    Parameters
+    ----------
+    profile_soup: BeautifulSoup
+      The page containing user data.
+    yd: string
+      Either 'AYD' or 'EYD'
+    """
 
     # Get the user's name and kgs name
     p_strings = profile_soup.find(text=re.compile(r'\baka\b')).split('aka ')
@@ -172,6 +219,18 @@ def insert_user(profile_soup, yd):
 
 
 def insert_game_table(table_df):
+    """
+    Cleans and inserts the table_df into PostgreSQL.
+
+    Parameters
+    ----------
+    table_df: Pandas.DataFrame
+      The table to be cleaned.
+
+    Returns
+    -------
+    None
+    """
     # Create new_df to fill with appropriate data
     new_df = pd.DataFrame()
 
@@ -181,12 +240,22 @@ def insert_game_table(table_df):
     table_df = table_df[table_df['White'] != 'Manual Rating Reset']
     table_df = table_df[table_df['Black'] != 'Initial Rating']
 
-    table_df['date'] = table_df['Tournament'].map(lambda x: x.split(',')[1].strip())
-    table_df['date'] = table_df['date'].map(lambda x:  x.split('-')[1] if '-' in x else x)
-    table_df['date'] = table_df['date'].map(lambda x: datetime.datetime.strptime(x, '%B %Y'))
-    table_df['tournament'] = table_df['Tournament'].map(lambda x: x.split(',')[0].strip())
+    table_df['date'] = table_df['Tournament'].map(
+        lambda x: x.split(',')[1].strip()
+    )
+    table_df['date'] = table_df['date'].map(
+        lambda x:  x.split('-')[1] if '-' in x else x
+    )
+    table_df['date'] = table_df['date'].map(
+        lambda x: datetime.datetime.strptime(x, '%B %Y')
+    )
+    table_df['tournament'] = table_df['Tournament'].map(
+        lambda x: x.split(',')[0].strip()
+    )
 
-    new_df['tournament'] = table_df['Tournament'].map(lambda x: x.split(',')[0].replace(',', ''))
+    new_df['tournament'] = table_df['Tournament'].map(
+        lambda x: x.split(',')[0].replace(',', '')
+    )
 
     new_df['round'] = table_df['Round'].map(int)
     new_df['black'] = table_df['Black']
@@ -194,10 +263,18 @@ def insert_game_table(table_df):
     new_df['b_win'] = table_df['Result'].map(lambda x: x.startswith('B'))
     new_df['w_win'] = table_df['Result'].map(lambda x: x.startswith('W'))
     new_df['date'] = table_df['date']
-    new_df['ayd_game'] = table_df['tournament'].map(lambda x: x.startswith('AYD'))
-    new_df['eyd_game'] = table_df['tournament'].map(lambda x: x.startswith('EYD'))
-    new_df['tournament'] = new_df['tournament'].map(lambda x: x.replace('EYD ', ''))
-    new_df['tournament'] = new_df['tournament'].map(lambda x: x.replace('AYD ', ''))
+    new_df['ayd_game'] = table_df['tournament'].map(
+        lambda x: x.startswith('AYD')
+    )
+    new_df['eyd_game'] = table_df['tournament'].map(
+        lambda x: x.startswith('EYD')
+    )
+    new_df['tournament'] = new_df['tournament'].map(
+        lambda x: x.replace('EYD ', '')
+    )
+    new_df['tournament'] = new_df['tournament'].map(
+        lambda x: x.replace('AYD ', '')
+    )
 
     conn = psy.connect(
             dbname='yd_records',
@@ -259,21 +336,3 @@ def insert_game_table(table_df):
 
 if __name__ == "__main__":
     main()
-
-# column = 'ayd_member' if yd == 'ayd' else 'eyd_member'
-# q = '''
-#     UPDATE "user"
-#     SET {column} = True
-#     WHERE kgs_username = '{kgs_name}';
-#     '''.format(column=column, kgs_name=kgs_name)
-# SELECT tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game
-# FROM game
-# WHERE tournament = 'League E'
-# AND round = 5
-# AND black = 'myokiki'
-# AND white = 'bcas1984'
-# AND b_win = True
-# AND w_win = False
-# AND date = TIMESTAMP '2015-01-01 00:00:00'
-# AND ayd_game = True
-# AND eyd_game = False;
