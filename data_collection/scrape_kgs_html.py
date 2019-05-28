@@ -12,6 +12,10 @@ def get_user_subpages():
     return 0
 
 
+def insert_to_mongo():
+    return 0
+
+    
 def process_user_subpage():
     return 0
 
