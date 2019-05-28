@@ -153,9 +153,9 @@ def scrape_subpage(profile_soup, yd=None):
         print(e)
         return None
 
-    insert_user(profile_soup, yd)
+    # insert_user(profile_soup, yd)
 
-    # insert_game_table(table_df)
+    insert_game_table(table_df)
 
     return None
 
@@ -195,7 +195,7 @@ def insert_user(profile_soup, yd):
     cur = conn.cursor()
 
     q = '''
-        SELECT * FROM "user"
+        SELECT * FROM "users"
         WHERE kgs_username='{}';
         '''.format(kgs_name)
 
@@ -203,7 +203,7 @@ def insert_user(profile_soup, yd):
     row = cur.fetchone()
     if row is None:
         q = '''
-            INSERT INTO "user" (name, kgs_username, ayd_member, eyd_member)
+            INSERT INTO "users" (name, kgs_username, ayd_member, eyd_member)
             VALUES(E'{name}', '{kgs_username}', {ayd_member}, {eyd_member});
             '''.format(
                     name=name,
@@ -241,8 +241,9 @@ def insert_game_table(table_df):
     table_df = table_df[table_df['Black'] != 'Initial Rating']
 
     table_df['date'] = table_df['Tournament'].map(
-        lambda x: x.split(',')[1].strip()
+        lambda x: x.split(',')[1].strip() if len(x.split(',')) > 1 else 'January 1900'
     )
+
     table_df['date'] = table_df['date'].map(
         lambda x:  x.split('-')[1] if '-' in x else x
     )
@@ -288,7 +289,7 @@ def insert_game_table(table_df):
     for row in new_df.itertuples():
         q = """
             SELECT tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game
-            FROM game
+            FROM games
             WHERE tournament = '{t}'
             AND round = {r}
             AND black = '{b}'
@@ -313,7 +314,7 @@ def insert_game_table(table_df):
         record = cur.fetchone()
         if record is None:
             q = """
-                INSERT INTO "game" (tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game)
+                INSERT INTO "games" (tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game)
                 VALUES ('{t}', {r}, '{b}', '{w}', {b_win}, {w_win}, TIMESTAMP '{d}', {ayd}, {eyd});
                 """.format(
                     t=row[1],
