@@ -119,9 +119,12 @@ def scrape_subpage(profile_soup, yd=None):
 
     insert_user(profile_soup, yd)
 
-    # Clean out rows without a tournament listed
+    # Clean out rating adjustment rows
+    table_df = table_df[table_df['Round'] != '0']
+    table_df = table_df[table_df['White'] != 'Manual Rating Reset']
 
-    table_df = table_df['Tournament']
+    # Change round to integers
+    table_df['Round'] = table_df['Round'].map(int)
 
     return None
 
