@@ -3,6 +3,7 @@ import psycopg2 as psy
 import requests as req
 from pymongo import MongoClient
 from time import sleep
+import datetime
 
 
 def main():
