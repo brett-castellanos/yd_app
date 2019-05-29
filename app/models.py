@@ -28,15 +28,13 @@ class Game(db.Model):
     ayd_game = db.Column(db.Boolean, default=0, index=True)
     eyd_game = db.Column(db.Boolean, default=0, index=True)
 
-    __tableargs__ = (
-        db.UniqueConstraint(
+    __table_args__ = (db.UniqueConstraint(
             'tournament',
             'round',
             'black',
             'white',
-            name='uniq_game_con'
-        ),
-    )
+            'date',
+            name='uniq_game_con'),)
 
     black_player = db.relationship(
         'User',
@@ -55,14 +53,15 @@ class KgsGame(db.Model):
     __tablename__ = 'kgs_games'
 
     id = db.Column(db.Integer, primary_key=True)
-    white = db.Column(db.String(64))
-    black = db.Column(db.String(64))
-    setup = db.Column(db.String(64))
+    white = db.Column(db.String(64), index=True)
+    w_rank = db.Column(db.Integer)
+    black = db.Column(db.String(64), index=True)
+    b_rank = db.Column(db.Integer)
     date = db.Column(db.DateTime, index=True, default=None)
     w_win = db.Column(db.Boolean, default=0)
     b_win = db.Column(db.Boolean, default=0)
     
-    __tableargs__ = (
+    __table_args__ = (
         db.UniqueConstraint(
             'date',
             'black',
