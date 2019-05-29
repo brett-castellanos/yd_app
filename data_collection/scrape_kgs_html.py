@@ -26,6 +26,7 @@ def main():
       for username in usernames.readlines():
           print("Now scraping for {}".format(username))
           links = get_user_links(username[0])
+          print("Getting Links")
           insert_user_subpages(links)
           print('Waiting 8-20 seconds.')
           sleep(random.uniform(8, 20))
@@ -54,7 +55,7 @@ def get_user_links(username):
     kgs_archive_base_url = 'https://www.gokgs.com/'
     add_old_users = '&oldAccounts=y'
     first_url = kgs_archive_base_url + 'gameArchives.jsp?user=' + username + add_old_users
-
+    print('Going to {}'.format(first_url))
     webpage = req.get(first_url)
     soup = BeautifulSoup(webpage.text, 'html5lib')
     
@@ -91,7 +92,7 @@ def insert_user_subpages(links):
     for link in links:
         cur_page = req.get(link)
         print('Scraping {}'.format(link))
-        print(req.status_codes)
+        print(cur_page.status_code)
         cur_soup = BeautifulSoup(cur_page.text, 'html5lib')
         insert_html_to_mongo(link, cur_soup, html_col)
         print('Waiting 8-20 seconds.')
