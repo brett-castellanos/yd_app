@@ -52,7 +52,8 @@ def get_user_links(username):
     """
     
     kgs_archive_base_url = 'https://www.gokgs.com/'
-    first_url = kgs_archive_base_url + 'gameArchives.jsp?user=' + username
+    add_old_users = '&oldAccounts=y'
+    first_url = kgs_archive_base_url + 'gameArchives.jsp?user=' + username + add_old_users
 
     webpage = req.get(first_url)
     soup = BeautifulSoup(webpage.text, 'html5lib')
