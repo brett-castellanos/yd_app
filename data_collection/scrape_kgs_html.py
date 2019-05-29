@@ -25,7 +25,7 @@ def main():
     with open('usernames.txt') as usernames:
       for username in usernames.readlines():
           print("Now scraping for {}".format(username))
-          links = get_user_links(username)
+          links = get_user_links(username.strip())
           print("Getting Links")
           insert_user_subpages(links)
           print('Waiting 8-20 seconds.')
