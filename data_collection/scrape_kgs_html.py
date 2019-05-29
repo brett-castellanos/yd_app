@@ -28,8 +28,8 @@ def main():
           links = get_user_links(username.strip())
           print("Getting Links")
           insert_user_subpages(links)
-          print('Waiting 8-20 seconds.')
-          sleep(random.uniform(8, 20))
+          print('Waiting 8-14 seconds.')
+          sleep(random.uniform(4, 14))
 
     # cur.close()
     # conn.close()
@@ -95,8 +95,8 @@ def insert_user_subpages(links):
         print(cur_page.status_code)
         cur_soup = BeautifulSoup(cur_page.text, 'html5lib')
         insert_html_to_mongo(link, cur_soup, html_col)
-        print('Waiting 8-20 seconds.')
-        sleep(random.uniform(8, 20))
+        print('Waiting 4-10 seconds.')
+        sleep(random.uniform(4, 10))
         
     return 0
 
