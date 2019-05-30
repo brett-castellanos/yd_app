@@ -24,9 +24,36 @@ The first step in most projects is gathering the data. This project is not an ex
 There were two relevant sources of data for this project. I'll discuss each in turn below.
 
 ### Scraping the EYD Website
-![image info] (app/images/yd_profile.png)
+Here is an image of my profile page on the EYD Website.
+<img src="./app/static/images/yd_profile.png"/>
+
+I found that every student--whether AYD or EYD--has a profile page associated with
+an URL with this format "https://eyd.yunguseng.com/season24/profile.php?id=" where
+the id is a number ranging from 1 to approximately 850. So, I was able to generate
+every URL and proceed directly to the page without much searching.
+
+As you can see, there is a lot of data here to be extracted. I'll talk about
+cleaning the data shortly. For now, let's just note the relevant data here:
+1. Name
+2. KGS Username
+3. Game Records
+
+At this point, I created a Mongo Database and inserted the html of each page for
+processing at a later time.
 
 ### Scraping the KGS Archive
+The KGS Archive proved to be a more challenging problem for two reasons:
+1. The relevant information was spread across several webpages per user.
+2. The volume of data.
+
+Here's an image of one month of my games from the archive.
+<img src="./app/static/images/kgs_profile.png"/>
+
+You'll notice that there are two tables here. The first
+contains the data about the games I played in May 2016.
+The second contains the URLs to other dates. Unfortunately,
+there is now way to tell whether the user played any games
+in a month before accessing that page.
 
 ## Data Cleaning
 
