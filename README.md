@@ -53,7 +53,21 @@ You'll notice that there are two tables here. The first
 contains the data about the games I played in May 2016.
 The second contains the URLs to other dates. Unfortunately,
 there is now way to tell whether the user played any games
-in a month before accessing that page.
+in a month before accessing that page. This means that we're
+going to dedicate a lot of time to accessing pages with no
+useful information.
+
+Because of the sheer number of pages, it wasn't feasible for
+me to perform the scraping locally. So, I utilized Amazon Web
+Services EC2 units to accomplish this task. I created an image
+with the required dependencies and an up to date copy of this
+repository. I used this image to spin up five EC2s and devoted
+each instance to scraping the archive, each targeting a different
+set of users.
+
+### Results
+I recorded the html of 850 pages on the EYD website and
+about 20,000 pages from the KGS Archives as of May 31, 2019.
 
 ## Data Cleaning
 
