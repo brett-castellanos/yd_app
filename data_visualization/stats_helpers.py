@@ -1,11 +1,31 @@
 import psycopg2 as psy
 import matplotlib.pyplot as plt
 import numpy as np
-
+import random as rand
 
 def main():
     
     return 0
+
+
+def jitter(n):
+    """
+    Returns an np.array with jitter values of length n.
+
+    Parameters
+    ----------
+    n: int:
+      Number of values to be generated
+
+    Returns
+    -------
+    jitter: np.array:
+      Jittery values between .25 and .75
+    """
+
+
+    return np.array([rand.uniform(.25,.75)
+                    for _ in range(n)])
 
 
 def get_random_usernames(n, member_type='any'):
@@ -53,22 +73,22 @@ def get_random_usernames(n, member_type='any'):
     queries = {
         'ayd': """
             SELECT kgs_username FROM {table}
-            OFFSET (random() * {row_count})
+            OFFSET floor(random() * {row_count})
             LIMIT 1;
         """.format(table=table_name, row_count=row_count),
         'eyd': """
             SELECT kgs_username FROM {table}
-            OFFSET (random() * {row_count})
+            OFFSET floor(random() * {row_count})
             LIMIT 1;
         """.format(table=table_name, row_count=row_count),
         'spectator': """
             SELECT kgs_username FROM {table}
-            OFFSET (random() * {row_count})
+            OFFSET floor(random() * {row_count})
             LIMIT 1;
         """.format(table=table_name, row_count=row_count),
         'any': """
             SELECT kgs_username FROM {table}
-            OFFSET (random() * {row_count})
+            OFFSET floor(random() * {row_count})
             LIMIT 1;
         """.format(table=table_name, row_count=row_count)
     }
