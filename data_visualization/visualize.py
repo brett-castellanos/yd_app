@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append('~/galvanize/capstone_1/yd_app/data_visualization')
 import stats_helpers as sh
 
 def main():
@@ -122,7 +122,7 @@ def visualize_yd_games_played(member_type, n):
     axs[0].boxplot(game_counts, vert=False)
     axs[0].set_yticklabels([])
     
-    plt.savefig('./data_visualization/visualizations/{}_game_count.png'.format(member_type))
+    plt.savefig('~/galvanize/capstone_1/yd_app/data_visualization'/visualizations/{}_game_count.png'.format(member_type))
     
     return None
 

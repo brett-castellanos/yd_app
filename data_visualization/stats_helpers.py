@@ -7,6 +7,86 @@ def main():
     
     return 0
 
+def get_member_counts():
+    """
+    Get the member count for each school and spectators.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    member_counts: dictionary:
+      k: 'ayd', 'eyd', 'spectator' v: count
+    """
+    conn = sh.connect_to_yd_records()
+    cur = conn.cursor()
+
+    q_dict = {
+        'ayd': """
+        SELECT COUNT(*) FROM users
+        WHERE ayd_member = true;
+        """,
+        'eyd': """
+        SELECT COUNT(*) FROM users
+        WHERE eyd_member = true;
+        """,
+        'spectator': """
+        SELECT COUNT(*) FROM users
+        WHERE ayd_member = false
+        AND eyd_member = false
+        """
+    }
+
+    counts = {}
+    for key in q_dict.keys():
+        cur.execute(q_dict[key])
+        # Get the first value from the tuple
+        counts[key] = cur.fetchone()[0]
+    
+    return counts
+
+
+def get_game_counts(kgs_usernames):
+    """
+    Given a list of usernames, returns a list
+    containing the number of games played by
+    those users.
+    
+    Parameters
+    ----------
+    kgs_usernames: list of strings:
+      The users to query
+
+    Returns
+    -------
+    game_counts: np.array of integers
+      The number of games played by each user.
+    """
+
+    conn = connect_to_yd_records()
+    cur = conn.cursor()
+
+    game_counts = []
+    formatted_string = str(kgs_usernames).replace('[', '').replace(']', '')
+    
+    q = """
+        SELECT users.kgs_username, COUNT(DISTINCT games.id)
+        FROM users JOIN games
+        ON users.kgs_username = games.black
+        OR users.kgs_username = games.white
+        WHERE users.kgs_username IN ({list})
+        GROUP BY users.kgs_username; 
+        """.format(list=formatted_string)
+
+    cur.execute(q)
+    results = np.array([record[1] for record in cur.fetchall()])
+    cur.close()
+    conn.close()
+    
+    return results
+
 
 def jitter(n):
     """
@@ -26,6 +106,38 @@ def jitter(n):
 
     return np.array([rand.uniform(.25,.75)
                     for _ in range(n)])
+
+
+def get_all_usernames(member_type='any'):
+    conn = connect_to_yd_records()
+    cur = conn.cursor()
+    table_name = ''
+    if member_type == 'any':
+        table_name = 'users'
+    else:
+        table_name = create_temp_table(member_type, cur)
+    
+    queries = {
+        'ayd': """
+            SELECT kgs_username FROM {table};
+        """.format(table=table_name),
+        'eyd': """
+            SELECT kgs_username FROM {table};
+        """.format(table=table_name),
+        'spectator': """
+            SELECT kgs_username FROM {table};
+        """.format(table=table_name),
+        'any': """
+            SELECT kgs_username FROM {table};
+        """.format(table=table_name)
+    }
+    cur.execute(queries[member_type])
+    records = [record[0] for record in cur.fetchall()]
+    
+    cur.close()
+    conn.close()
+
+    return records
 
 
 def get_random_usernames(n, member_type='any'):
