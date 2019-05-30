@@ -70,10 +70,19 @@ I recorded the html of 850 pages on the EYD website and
 about 20,000 pages from the KGS Archives as of May 31, 2019.
 
 ## Data Cleaning
+Although I still do not have the complete set of data from the KGS
+Archive, I have developed the pipelines to clean and organize the
+information I've gathered from both sources into usable data.
+
+### PostgreSQL and SQLAlchemy
+<img src="./app/static/images/erd.jpg"/>
+
+
 
 ### Cleaning YD Data
 
-### Cleaning AYD Data
+
+### Cleaning KGS Data
 
 ## Descriptive Statistics
 
