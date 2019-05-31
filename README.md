@@ -117,8 +117,11 @@ on the KGS Archives.
 
 ## Hypothesis Testing
 
-### Does being a member of EYD or AYD effect the number of games played?
-[H_0]
+### Mean Games Played
+$[H_0]$
+
+
+
 
 ## For the Future (as of May 31, 2019)
 
