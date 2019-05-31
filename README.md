@@ -97,17 +97,23 @@ on the KGS Archives.
 #### Number of Students
 <img src="./app/static/images/membership_info.png"/>
 
-#### Win Rate By Student
-<img src="./app/static/images/yd_win_rates.png"/>
-
-<img src="./app/static/images/kgs_win_rates.png"/>
-
 ### Games Played on KGS
 <img src="./app/static/images/games_per_player_outliers.png"/>
 
 <img src="./app/static/images/games_per_player.png"/>
 
 <img src="./app/static/images/games_per_player_1000.png"/>
+
+#### Win Rate By Student
+<img src="./app/static/images/yd_win_rates.png"/>
+
+<img src="./app/static/images/kgs_win_rates.png"/>
+
+<img src="./app/static/images/kgs_eyd_win_rates.png"/>
+
+<img src="./app/static/images/kgs_ayd_win_rates.png"/>
+
+<img src="./app/static/images/kgs_spectator_win_rates.png"/>
 
 ## Hypothesis Testing
 
