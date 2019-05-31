@@ -1,4 +1,4 @@
-# Analysis of Student's at the American and European Yunguseng Dojangs
+# Analysis of Students from the American and European Yunguseng Dojangs
 
 ## Background
 The Yungseng Dojang--comprising an American and European school--is an
