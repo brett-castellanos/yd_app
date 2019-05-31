@@ -98,6 +98,9 @@ on the KGS Archives.
 <img src="./app/static/images/membership_info.png"/>
 
 #### Win Rate By Student
+<img src="./app/static/images/yd_win_rates.png"/>
+
+<img src="./app/static/images/kgs_win_rates.png"/>
 
 ## Hypothesis Testing
 
