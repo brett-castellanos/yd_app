@@ -113,7 +113,7 @@ def visualize_yd_games_played(member_type, n):
 
     fig, axs = plt.subplots(2, 1, sharex=True)
 
-    fig.suptitle('Distribution of Game Count for {}'.format(member_type))
+    fig.suptitle('Distribution of Game Count for {}'.format(member_type.upper()))
 
     axs[1].set_xlabel('Game Count')
     axs[1].scatter(game_counts, sh.jitter(len(game_counts)))
@@ -122,7 +122,7 @@ def visualize_yd_games_played(member_type, n):
     axs[0].boxplot(game_counts, vert=False)
     axs[0].set_yticklabels([])
     
-    plt.savefig('~/galvanize/capstone_1/yd_app/data_visualization'/visualizations/{}_game_count.png'.format(member_type))
+    plt.savefig('./galvanize/capstone_1/yd_app/data_visualization/visualizations/{}_game_count.png'.format(member_type))
     
     return None
 

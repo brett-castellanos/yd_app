@@ -124,6 +124,10 @@ to the mean number of games played as a EYD member.
 H0: The mean number of games played as an AYD member is equal
 to the mean number of games played as an EYD member.
 
+<img src="./data_visualization/visualizations/ayd_game_count.png"/>
+
+<img src="./data_visualization/visualizations/eyd_game_count.png"/>
+
 EYD Sample Size = 447
 AYD Sample Size = 227
 
