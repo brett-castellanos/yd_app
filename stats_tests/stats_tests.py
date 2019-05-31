@@ -4,8 +4,8 @@ import sys
 sys.path.append('/Users/brettcastellanos/galvanize/capstone_1/yd_app/data_visualization')
 import stats_helpers as sh
 
+
 def main():
-    
     ayd_users = sh.get_all_usernames('ayd')
     eyd_users = sh.get_all_usernames('eyd')
     print(len(ayd_users))
@@ -21,19 +21,6 @@ def main():
     print(stats.ttest_ind(ayd_game_counts, eyd_game_counts, equal_var=False))
     return 0
 
-def mean_games_played_test(alpha=.05, beta=.05):
-    """
-    Test whether the schools have the same mean games played per user.
-
-    Parameters
-    ----------
-    None
-
-    Returns
-    -------
-    None
-    """
-    
 
 def compute_standard_error(dist_1, dist_2):
     """
@@ -60,7 +47,7 @@ def compute_dof(dist_1, dist_2):
     d_p2 = ((dist_2.std()**2/dist_2.shape[0])**2) / (dist_2.shape[0] - 1)
 
     return int(round(numerator / (d_p1 + d_p2)))
-    
+
 
 def compute_t_statistic(dist_1, dist_2, effect):
 
@@ -72,3 +59,4 @@ def compute_t_statistic(dist_1, dist_2, effect):
 
 if __name__ == "__main__":
     main()
+

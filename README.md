@@ -1,6 +1,7 @@
 # Analysis of Students from the American and European Yunguseng Dojangs
 
 ## Background
+
 The Yungseng Dojang--comprising an American and European school--is an
 online go school run by In-seong Hwang. He is a very strong amatuer go player
 from South Korea currently living in France.
@@ -19,11 +20,13 @@ With all of this data available, this seemed like an excellent topic for
 analysis.
 
 ## Web-scraping
+
 The first step in most projects is gathering the data. This project is not an exception.
 
 There were two relevant sources of data for this project. I'll discuss each in turn below.
 
 ### Scraping the EYD Website
+
 Here is an image of my profile page on the EYD Website.
 <img src="./app/static/images/yd_profile.png"/>
 
@@ -34,6 +37,7 @@ every URL and proceed directly to the page without much searching.
 
 As you can see, there is a lot of data here to be extracted. I'll talk about
 cleaning the data shortly. For now, let's just note the relevant data here:
+
 1. Name
 2. KGS Username
 3. Game Records
@@ -43,6 +47,7 @@ processing at a later time.
 
 ### Scraping the KGS Archive
 The KGS Archive proved to be a more challenging problem for two reasons:
+
 1. The relevant information was spread across several webpages per user.
 2. The volume of data.
 
@@ -70,14 +75,17 @@ I recorded the html of 850 pages on the EYD website and
 about 20,000 pages from the KGS Archives as of May 31, 2019.
 
 ## Data Cleaning
+
 Although I still do not have the complete set of data from the KGS
 Archive, I have developed the pipelines to clean and organize the
 information I've gathered from both sources into usable data.
 
 ### PostgreSQL and SQLAlchemy
+
 <img src="./app/static/images/erd.jpg"/>
 
 ### Cleaning YD Data
+
 The following function is used to clean the data displayed
 on a YD Member page.
 <img src="./app/static/images/clean_yd_table1.png"/>
@@ -156,6 +164,3 @@ to support the claim that the means are not equal.
 3. Better use of existing libraries.
 4. Better testing procedures and workflow.
 5. Better use of OOP methodology.
-
-
-

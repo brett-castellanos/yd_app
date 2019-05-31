@@ -1,11 +1,11 @@
 import psycopg2 as psy
-import matplotlib.pyplot as plt
 import numpy as np
 import random as rand
 
+
 def main():
-    
     return 0
+
 
 def get_member_counts():
     """
@@ -20,7 +20,7 @@ def get_member_counts():
     member_counts: dictionary:
       k: 'ayd', 'eyd', 'spectator' v: count
     """
-    conn = sh.connect_to_yd_records()
+    conn = connect_to_yd_records()
     cur = conn.cursor()
 
     q_dict = {
@@ -109,6 +109,20 @@ def jitter(n):
 
 
 def get_all_usernames(member_type='any'):
+    """
+    Returns a list of all the users of type member_type.
+
+    Parameters
+    ----------
+    member_type: string:
+      'ayd', 'eyd', 'spectator', 'any'
+
+    Returns
+    -------
+    usernames: list of strings:
+      The list of usernames of type member_type.
+
+    """
     conn = connect_to_yd_records()
     cur = conn.cursor()
     table_name = ''
