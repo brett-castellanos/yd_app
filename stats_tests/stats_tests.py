@@ -1,7 +1,7 @@
 import scipy.stats as stats
 import numpy as np
 import sys
-sys.path.append('/Users/brettcastellanos/galvanize/capstone_1/yd_app/data_visualization')
+sys.path.append('../data_visualization')
 import stats_helpers as sh
 
 
