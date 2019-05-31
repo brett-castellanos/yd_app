@@ -286,6 +286,8 @@ def insert_game_table(table_df):
 
     cur = conn.cursor()
 
+    # Pandas tosql function doesn't handle insertion conflicts well.
+    # So, I check whether the record exists before it is inserted.
     for row in new_df.itertuples():
         q = """
             SELECT tournament, round, black, white, b_win, w_win, date, ayd_game, eyd_game
