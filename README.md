@@ -102,6 +102,11 @@ on the KGS Archives.
 
 <img src="./app/static/images/kgs_win_rates.png"/>
 
+### Games Played on KGS
+<img src="./app/static/images/games_per_player_outliers.png"/>
+
+<img src="./app/static/images/games_per_player.png"/>
+
 ## Hypothesis Testing
 
 ## For the Future (as of May 31, 2019)
