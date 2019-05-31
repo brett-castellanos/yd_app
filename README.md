@@ -117,28 +117,28 @@ on the KGS Archives.
 
 ## Hypothesis Testing
 
+### Does being a member of EYD or AYD effect the number of games played?
+[H_0]
+
 ## For the Future (as of May 31, 2019)
 
 ### Flask Application
 
 ### Scheduled Scraping for New Data
 
-### Deployment
-
 ## Post-Mortem (as of May 31, 2019)
 
 ### What went well?
 1. Version control.
-2. Use of MongoDB and Postgres.
+2. Use of MongoDB, Postgres, and SQLalchemy.
 3. Pandas during data cleaning.
-4. Reasonable implementation of the 
 
 ### What could be improved?
 1. Better utilization of cloud computing.
 2. Utilization of descriptive statistics.
 3. Better use of existing libraries.
 4. Better testing procedures and workflow.
+5. Better use of OOP methodology.
 
-### How to improve for next time?
 
 
