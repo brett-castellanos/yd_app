@@ -10,8 +10,8 @@ def main():
     #visualize_membership()
     counts = get_member_counts()
 
-    visualize_yd_games_played('ayd', 50)
-    visualize_yd_games_played('eyd', 50)
+    visualize_yd_games_played('ayd', 200)
+    visualize_yd_games_played('eyd', 400)
     
 
     return 0
@@ -122,7 +122,7 @@ def visualize_yd_games_played(member_type, n):
     axs[0].boxplot(game_counts, vert=False)
     axs[0].set_yticklabels([])
     
-    plt.savefig('./galvanize/capstone_1/yd_app/data_visualization/visualizations/{}_game_count.png'.format(member_type))
+    plt.savefig('./data_visualization/visualizations/{}_game_count.png'.format(member_type))
     
     return None
 
