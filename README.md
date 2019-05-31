@@ -107,6 +107,8 @@ on the KGS Archives.
 
 <img src="./app/static/images/games_per_player.png"/>
 
+<img src="./app/static/images/games_per_player_1000.png"/>
+
 ## Hypothesis Testing
 
 ## For the Future (as of May 31, 2019)
