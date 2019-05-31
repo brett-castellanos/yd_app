@@ -25,6 +25,8 @@ The first step in most projects is gathering the data. This project is not an ex
 
 There were two relevant sources of data for this project. I'll discuss each in turn below.
 
+<img src="./app/static/images/web_scraping_join.png"/>
+
 ### Scraping the EYD Website
 
 Here is an image of my profile page on the EYD Website.
