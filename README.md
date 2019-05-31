@@ -74,7 +74,7 @@ set of users.
 
 ### Results
 I recorded the html of 850 pages on the EYD website and
-about 20,000 pages from the KGS Archives as of May 31, 2019.
+at least 50,000 pages from the KGS Archives as of May 31, 2019.
 
 ## Data Cleaning
 
