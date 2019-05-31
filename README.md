@@ -118,10 +118,24 @@ on the KGS Archives.
 ## Hypothesis Testing
 
 ### Mean Games Played
-$[H_0]$
+Ha: The mean number of games played as an AYD member is equal
+to the mean number of games played as a EYD member.
 
+H0: The mean number of games played as an AYD member is equal
+to the mean number of games played as an EYD member.
 
+EYD Sample Size = 447
+AYD Sample Size = 227
 
+EYD mean = 46.96
+AYD mean = 46.67
+
+Standard Error = 0.55
+
+Results: Test Statistic = 0.07 P Value = .94
+
+So, we fail to reject H0. We find no evidence
+to support the claim that the means are not equal.
 
 ## For the Future (as of May 31, 2019)
 
