@@ -77,18 +77,25 @@ information I've gathered from both sources into usable data.
 ### PostgreSQL and SQLAlchemy
 <img src="./app/static/images/erd.jpg"/>
 
-
-
 ### Cleaning YD Data
-
+The following function is used to clean the data displayed
+on a YD Member page.
+<img src="./app/static/images/clean_yd_table1.png"/>
+<img src="./app/static/images/clean_yd_table2.png"/>
 
 ### Cleaning KGS Data
+
+The following function is used to clean the data displayed
+on the KGS Archives.
+<img src="./app/static/images/clean_kgs_table.png"/>
+
 
 ## Descriptive Statistics
 
 ### YD Data
 
 #### Number of Students
+<img src="./app/static/images/membership_info.png"/>
 
 #### Win Rate By Student
 
