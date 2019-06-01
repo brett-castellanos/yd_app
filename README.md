@@ -128,10 +128,10 @@ on the KGS Archives.
 ## Hypothesis Testing
 
 ### Mean Games Played
-Ha: The mean number of games played as an AYD member is equal
+H0: The mean number of games played as an AYD member is equal
 to the mean number of games played as a EYD member.
 
-H0: The mean number of games played as an AYD member is equal
+Ha: The mean number of games played as an AYD member is not equal
 to the mean number of games played as an EYD member.
 
 EYD Sample Size = 447
